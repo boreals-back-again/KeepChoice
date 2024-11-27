@@ -32,3 +32,9 @@ exampleworld:
 
 runinworlds:
   - "*" #Keep the star to run in every world (if keepinventory is true; setting keepinventory = false disables this plugin in that particular world)
+
+# DO NOT EDIT BELOW HERE - DATA STORAGE!!
+
+data:
+  .placeholder:
+    empty: ""

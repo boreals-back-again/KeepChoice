@@ -19,12 +19,14 @@ public class Config {
     public Config(FileConfiguration ingress) {
         RunInWorlds = ingress.getStringList("runinworlds");
 
-        List<String> configkeys = new ArrayList<String>(ingress.getKeys(true));
+        List<String> configkeys = new ArrayList<String>(ingress.getKeys(false));
         for (String configkey:configkeys) {
-            Static.Logger.info(configkey);
-            if (!configkey.equals("runinworlds")) {
+            //Static.Logger.info(configkey);
+            if (!configkey.equals("runinworlds") && !configkey.equals("data")) {
                 //Avoid accidentally grabbing the runinworlds
-                WorldSettings.put(configkey,ingress.getObject(configkey,ConfigDefaultBehaviour.class));
+                ConfigDefaultBehaviour pv = new ConfigDefaultBehaviour(ingress,configkey);
+                //Static.Logger.info(String.valueOf(pv.KeepItems));
+                WorldSettings.put(configkey,pv);
             }
         }
     }

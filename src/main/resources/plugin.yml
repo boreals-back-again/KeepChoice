@@ -1,0 +1,4 @@
+name: KeepChoice
+version: 1.0.4
+main: net.enderbyteprograms.KeepChoice.KeepChoiceMain
+api-version: 1.16

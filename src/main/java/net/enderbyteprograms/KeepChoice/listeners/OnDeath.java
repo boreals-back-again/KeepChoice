@@ -30,7 +30,7 @@ public class OnDeath implements Listener {
                                     getName()));
 
         }
-        Static.Logger.info("Setting to "+data.WorldData.get(currentworld).toString());
+        //Static.Logger.info("Setting to "+data.WorldData.get(currentworld).toString());
         event.setKeepInventory(data.WorldData.get(currentworld));
         event.setKeepLevel(data.WorldData.get(currentworld));
 

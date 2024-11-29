@@ -25,7 +25,7 @@ public class KeepInventoryTabCompleter implements TabCompleter {
                 result.add(w.getName());
             }
             if (Utils.isAdmin(sender)) {
-                result.addAll(Arrays.asList("help", "list", "info", "setrunson", "setdefaultkion"));
+                result.addAll(Arrays.asList("help", "list", "info", "setrunson", "setdefaultkion","reload"));
             } else {
                 result.add("help");
             }

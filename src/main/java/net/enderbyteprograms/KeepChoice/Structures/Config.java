@@ -68,4 +68,12 @@ public class Config {
         return RunInWorlds.contains(name);
     }
 
+    public boolean GetFor(String worldname) {
+        if (IsWorldKnown(worldname)) {
+            return WorldSettings.get(worldname).KeepItems;
+        } else {
+            return getDefault().KeepItems;
+        }
+    }
+
 }

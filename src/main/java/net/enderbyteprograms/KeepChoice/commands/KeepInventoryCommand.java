@@ -198,6 +198,7 @@ public class KeepInventoryCommand implements CommandExecutor {
                         }
                         Static.RawConfig.set("default.Enabled",newstate);
                         Static.Plugin.saveConfig();
+                        Utils.SendSuccess(sender,"Updated default setting for all worlds using default settings");
 
                     } else {
                         ConfigDefaultBehaviour olddata = Static.Config.WorldSettings.get(forworld);
@@ -206,7 +207,14 @@ public class KeepInventoryCommand implements CommandExecutor {
                         }
                         olddata.KeepItems = newstate;
                         Static.Config.WorldSettings.put(forworld,olddata);
+                        Static.RawConfig.set(forworld+".Enabled",newstate);
+                        if (force) {
+                            for (PlayerData p:Static.Data.values()) {
+                                p.WorldData.put(forworld,newstate);
+                            }
+                        }
                         Static.Plugin.saveConfig();
+                        Utils.SendSuccess(sender,"Updated default setting for world "+forworld);
                     }
 
                 } else if (action.equals("reload")) {

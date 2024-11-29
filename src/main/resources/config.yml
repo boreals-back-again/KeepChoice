@@ -12,8 +12,11 @@ runinworlds:
   - "*" #Keep the star to run in every world (if keepinventory is true; setting keepinventory = false disables this plugin in that particular world)
   - "__placeholder" #This is just to preserve the list in case you set it to be empty. Please keep placeholder in here even if you want to disable this plugin.
 
-# DO NOT EDIT BELOW HERE - DATA STORAGE!!
+# DO NOT EDIT THIS OBJECT - DATA STORAGE!!
 
 data:
   __placeholder:
     empty: ""
+
+# YOU MAY EDIT AGAIN
+

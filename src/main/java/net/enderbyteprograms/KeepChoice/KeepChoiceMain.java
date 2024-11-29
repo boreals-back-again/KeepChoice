@@ -4,6 +4,7 @@ import net.enderbyteprograms.KeepChoice.Structures.Config;
 import net.enderbyteprograms.KeepChoice.Structures.PlayerData;
 import net.enderbyteprograms.KeepChoice.bstats.Metrics;
 import net.enderbyteprograms.KeepChoice.commands.KeepInventoryCommand;
+import net.enderbyteprograms.KeepChoice.commands.KeepInventoryTabCompleter;
 import net.enderbyteprograms.KeepChoice.listeners.OnJoin;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -28,6 +29,7 @@ public class KeepChoiceMain extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new OnJoin(), this);
         getCommand("keepinventory").setExecutor(new KeepInventoryCommand());
+        getCommand("keepinventory").setTabCompleter(new KeepInventoryTabCompleter());
 
         getLogger().info("KeepChoice is ready. (c) 2024 Enderbyte Programs, some rights reserved");
     }

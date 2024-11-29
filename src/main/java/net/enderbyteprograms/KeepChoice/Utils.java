@@ -68,4 +68,14 @@ public class Utils {
             return null;
         }
     }
+
+    public static List<String> CompareStartsWith(List<String> input, String phrase) {
+        List<String> result = new ArrayList<String>();
+        for (String p:input) {
+            if (p.startsWith(phrase) || phrase.replace(" ","").equals("")) {
+                result.add(p);
+            }
+        }
+        return result;
+    }
 }

@@ -2,3 +2,23 @@ name: KeepChoice
 version: 1.0.4
 main: net.enderbyteprograms.KeepChoice.KeepChoiceMain
 api-version: 1.16
+
+commands:
+  keepinventory:
+    description: Enable or Disable Keep Inventory
+    aliases:
+      - ki
+      - keepchoice
+
+permissions:
+  keepchoice.*:
+    description: Dummy wildcard permission
+    children:
+      keepchoice.use: true
+      keepchoice.admin: true
+  keepchoice.use:
+    description: Allows players to choose their keep inventory status on worlds where it is enabled.
+    default: true
+  keepchoice.admin:
+    description: Allows players to configure this plugin.
+    default: op

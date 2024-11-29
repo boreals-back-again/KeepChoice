@@ -14,6 +14,8 @@ public class Static {
     public static Config Config;
     public static Logger Logger;
     public static HashMap<String, PlayerData> Data = new HashMap<>();
-    public static JavaPlugin Plugin;
+    public static KeepChoiceMain Plugin;
+
+
 
 }

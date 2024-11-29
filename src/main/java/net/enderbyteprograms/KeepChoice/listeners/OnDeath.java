@@ -11,9 +11,10 @@ public class OnDeath implements Listener {
     public void onPlayerDeath(PlayerDeathEvent event) {
         String uuid = event.getEntity().getUniqueId().toString();
         PlayerData data = Static.Data.get(uuid);
+        String currentworld =event.getEntity().getWorld().getName();
 
         if (!Static.Config.IsWorldAllowed(event.getEntity().getWorld().getName())) {
-
+            return;
         }
 
         if (data.WorldData.containsKey(event.getEntity().getWorld().getName())) {
@@ -29,7 +30,9 @@ public class OnDeath implements Listener {
                                     getName()));
 
         }
-        if ()
+        Static.Logger.info("Setting to "+data.WorldData.get(currentworld).toString());
+        event.setKeepInventory(data.WorldData.get(currentworld));
+        event.setKeepLevel(data.WorldData.get(currentworld));
 
     }
 }

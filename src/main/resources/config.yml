@@ -1,5 +1,5 @@
 default:
-  # Specifies what should be the default behaviour. Note that you need to set KeepInventory = True on your world's config for this plugin to work
+  # Specifies what should be the default behaviour.
   Enabled: false,
   # Should the player keep their items if they die? By default!
 
@@ -9,7 +9,7 @@ exampleworld:
   Enabled: true
 
 runinworlds:
-  - "*" #Keep the star to run in every world (if keepinventory is true; setting keepinventory = false disables this plugin in that particular world)
+  - "*" #Keep the star to run in every world.
   - "__placeholder" #This is just to preserve the list in case you set it to be empty. Please keep placeholder in here even if you want to disable this plugin.
 
 # DO NOT EDIT THIS OBJECT - DATA STORAGE!!

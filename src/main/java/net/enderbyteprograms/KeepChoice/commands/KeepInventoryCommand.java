@@ -86,11 +86,7 @@ public class KeepInventoryCommand implements CommandExecutor {
                             //Exemption for default
                         } else {
                             try {
-                                if (!w.getGameRuleValue(GameRule.KEEP_INVENTORY)) {
-                                    sender.sendMessage("World " + k + ": " + Utils.FriendlyBool(Static.Config.WorldSettings.get(k).KeepItems) + " (Disabled)");
-                                } else {
-                                    sender.sendMessage("World " + k + ": " + Utils.FriendlyBool(Static.Config.WorldSettings.get(k).KeepItems));
-                                }
+                                sender.sendMessage("World " + k + ": " + Utils.FriendlyBool(Static.Config.WorldSettings.get(k).KeepItems));
                             } catch (Exception e) {
                                 //Prevent default from being ignored
                                 sender.sendMessage("World " + k + ": " + Utils.FriendlyBool(Static.Config.WorldSettings.get(k).KeepItems));
@@ -125,16 +121,12 @@ public class KeepInventoryCommand implements CommandExecutor {
                         if (newstate) {
                             Static.Config.RunInWorlds.clear();
                             for (World w:Bukkit.getWorlds()) {
-                                if (!w.getGameRuleValue(GameRule.KEEP_INVENTORY)) {
-                                    sender.sendMessage(ChatColor.YELLOW+"Skipping world "+w.getName());
-                                    continue;
-                                }
 
                                 Static.Config.RunInWorlds.add(w.getName());
                             }
                             Static.RawConfig.set("runinworlds",new String[]{"*"});
                             Static.Plugin.saveConfig();
-                            Utils.SendSuccess(sender,"Plugin enabled on all worlds where keepinventory = true.");
+                            Utils.SendSuccess(sender,"Plugin enabled on all worlds");
 
                         } else {
                             Static.Config.RunInWorlds.clear();

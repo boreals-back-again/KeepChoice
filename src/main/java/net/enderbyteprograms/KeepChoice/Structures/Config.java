@@ -29,12 +29,7 @@ public class Config {
             //Wildcard detected
             RunInWorlds.clear();
             for (World w: Bukkit.getWorlds()) {
-                if (w.getGameRuleValue(GameRule.KEEP_INVENTORY)) {
-                    RunInWorlds.add(w.getName());
-                }
-                else {
-                    Static.Logger.info("Skipping world "+w.getName()+" as keepinventory is turned off.");
-                }
+                RunInWorlds.add(w.getName());
             }
         }
         RunInWorlds.remove("*");
@@ -47,11 +42,11 @@ public class Config {
                 if (!configkey.equals("default")) {
                     try {
                         World w = Bukkit.getWorld(configkey);
-                        if (!w.getGameRuleValue(GameRule.KEEP_INVENTORY)) {
+                        if (w == null) {
                             throw new Exception();
                         }
                     } catch (Exception e){
-                        Static.Logger.warning("Skipped world "+configkey+" as it doesn't exist or keepinventory isn't enabled!");
+                        Static.Logger.warning("Skipped world "+configkey+" as it doesn't exist.");
                     }
                 }
                 ConfigDefaultBehaviour pv = new ConfigDefaultBehaviour(ingress,configkey);

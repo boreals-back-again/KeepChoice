@@ -33,7 +33,7 @@ public class KeepChoiceMain extends JavaPlugin {
         getCommand("keepinventory").setExecutor(new KeepInventoryCommand());
         getCommand("keepinventory").setTabCompleter(new KeepInventoryTabCompleter());
 
-        getLogger().info("KeepChoice is ready. (c) 2024 Enderbyte Programs, some rights reserved");
+        getLogger().info("KeepChoice is ready. (c) 2024-2025 Enderbyte Programs, some rights reserved");
     }
     @Override
     public void onDisable() {

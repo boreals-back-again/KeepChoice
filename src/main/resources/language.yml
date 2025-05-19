@@ -1,0 +1,58 @@
+selected: "en"
+#^^^^^^^ Change the above line to set the language ^^^^^^^
+#Please note that changing the language here will not change command line arguments. No matter what language you choose, the plugin will require yes/no from the user.
+#Please also note that low-level log messages and warnings do not use this file as they are intended to show even in the event of a crash.
+available:
+  - "en"
+  - "xx"
+# As of v1.1, you can only choose from English, or write your own custom messages. If there is demand, I will use google translate to convert it to other common languages
+fallback : "en"
+translations:
+  en:
+    welcome.startup: "KeepChoice is ready."
+    welcome.goodbye: "Byebye everybody!"
+    help.lineinfo: "<> denotes mandatory argument, [] denotes optional argument."
+    help.adminhelp: |
+      #AQUA/keepinventory#RESET [world] [player]
+          Toggles keep inventory status (if the player is allowed to) for [world] if specified, and for [player] if specified (themself if not)
+      #AQUA/keepinventory#RESET worldinfo
+          Lists world configurations stored in data
+      #AQUA/keepinventory#RESET playerinfo <player>
+          Lists all player data
+      #AQUA/keepinventory#RESET setrunson <world> <yes|no>
+          Set whether this plugin runs on <world>
+      #AQUA/keepinventory#RESET setdefaultkion <world> <yes|no> [force|noforce]
+          Set the default keep inventory status for <world>. If force is specified, every player's settings will be updated to match this. If not, only newly joined players will experience the change.
+      #AQUA/keepinventory#RESET reload
+          Reload configuration from the disk
+    help.userhelp: |
+      #AQUA/keepinventory#RESET [world]
+          Toggle your keep inventory status on [world]. If [world] is not specified, the change will be applied to your current world.
+    gen.yes: "#GREENyes#RESET"
+    gen.no: "#REDno#RESET"
+    info.head: "Default Keep Inventory?:"
+    info.world: "World"
+    list.head: "Note that data will appear whether or not this plugin is allowed in that world."
+
+    error.perms: "Insufficient Privilege!"
+    error.args: "Not enough arguments!"
+    error.invalidworld: "Invalid world name. Either use a world name, or #default to edit the default settings"
+    error.notenabled: "Keep Inventory Choice is not permitted in this world."
+    error.unknown: "Please specify a world and a player, or run /keepinventory help for a list of options"
+
+    run.allenabled: "Plugin enabled on all worlds"
+    run.alldisabled: "Plugin disabled on all worlds"
+    stateupdated: "Updated plugin state for "
+
+    update.default: "Updated default setting for all worlds using default settings"
+    update.world: "Updated default setting for world "
+
+    kihead: "Keep inventory for world \""
+
+  xx:
+    #fill in custom values here, using the same keys as the other languages. For example
+    welcome.startup: "ydaer si Eciohcpeek"
+    gen.yes: "#GREENyayaya#RESET"
+    gen.no: "#REDnonononono#RESET"
+version: 7
+parsecolour: true

@@ -1,5 +1,6 @@
 package net.enderbyteprograms.KeepChoice;
 
+import net.enderbyteprograms.KeepChoice.Language.EPLanguage;
 import net.enderbyteprograms.KeepChoice.Structures.Constants;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -29,9 +30,9 @@ public class Utils {
 
     public static String FriendlyBool(boolean value) {
         if (value) {
-            return ChatColor.GREEN + "yes" + ChatColor.RESET;
+            return EPLanguage.get("gen.yes");
         } else {
-            return ChatColor.RED + "no" + ChatColor.RESET;
+            return EPLanguage.get("gen.no");
         }
     }
 

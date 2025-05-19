@@ -5,8 +5,19 @@
 
 ## Server Requirements
 
-- Java 8 or newer
-- Minecraft 1.16.5 or newer (this pluign supports all versions after this, including 1.21.3 and etc...)
+- Java 11 or newer
+- Minecraft 1.16.5 or newer (this plugin supports all versions after this, including 1.21.3 and etc...)
+
+### What's new?
+
+**VERSION 1.1**
+
+- Add internationalization support
+  - Edit language.yml to customize messages
+  - Has colour support
+- Move /keepinventory info to /keepinventory worldinfo
+- Remove /keepinventory list as it was effectively for debug
+- Add /keepinventory playerinfo \<player\> that does effectively the same thing
 
 ## Setting Up
 

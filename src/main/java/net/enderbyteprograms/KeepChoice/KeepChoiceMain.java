@@ -1,5 +1,7 @@
 package net.enderbyteprograms.KeepChoice;
 
+import net.enderbyteprograms.KeepChoice.Language.EPLanguage;
+import net.enderbyteprograms.KeepChoice.Language.Languages;
 import net.enderbyteprograms.KeepChoice.Structures.Config;
 import net.enderbyteprograms.KeepChoice.Structures.PlayerData;
 import net.enderbyteprograms.KeepChoice.bstats.Metrics;
@@ -8,8 +10,12 @@ import net.enderbyteprograms.KeepChoice.commands.KeepInventoryTabCompleter;
 import net.enderbyteprograms.KeepChoice.listeners.OnDeath;
 import net.enderbyteprograms.KeepChoice.listeners.OnJoin;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.IOException;
 
 public class KeepChoiceMain extends JavaPlugin {
     @Override
@@ -33,12 +39,38 @@ public class KeepChoiceMain extends JavaPlugin {
         getCommand("keepinventory").setExecutor(new KeepInventoryCommand());
         getCommand("keepinventory").setTabCompleter(new KeepInventoryTabCompleter());
 
-        getLogger().info("KeepChoice is ready. (c) 2024-2025 Enderbyte Programs, some rights reserved");
+        //Create language file if it doesn't exist
+        File datafilelocation = new File(this.getDataFolder(),"language.yml");
+        boolean langloadfailed = false;
+        try {
+            EPLanguage.LoadConfigurationFile(datafilelocation);
+        } catch (Exception e) {
+            getLogger().warning("Writing new language file - "+e.getMessage());
+            langloadfailed = true;
+        }
+
+        if (!datafilelocation.exists() || langloadfailed) {
+            Languages stl = null;
+            if (EPLanguage.SelectedLanguage != null) {
+                stl = EPLanguage.SelectedLanguage;
+            }
+            saveResource("language.yml",true);
+            try {
+                EPLanguage.LoadConfigurationFile(datafilelocation);
+            } catch (IOException | InvalidConfigurationException e) {
+                throw new RuntimeException(e);
+            }
+            if (stl != null) {
+                EPLanguage.ChooseLanguage(stl.value());
+            }
+        }
+
+        getLogger().info(EPLanguage.get("welcome.startup")+" (c) 2024-2025 Enderbyte Programs, some rights reserved");
     }
     @Override
     public void onDisable() {
         WritePlayerData();
-        getLogger().info("ByeBye Everybody!");
+        getLogger().info(EPLanguage.get("welcome.goodbye"));
     }
 
     public void WritePlayerData() {

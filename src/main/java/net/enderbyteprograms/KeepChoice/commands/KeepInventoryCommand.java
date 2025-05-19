@@ -1,6 +1,7 @@
 package net.enderbyteprograms.KeepChoice.commands;
 
 import net.enderbyteprograms.KeepChoice.KeepChoiceMain;
+import net.enderbyteprograms.KeepChoice.Language.EPLanguage;
 import net.enderbyteprograms.KeepChoice.Static;
 import net.enderbyteprograms.KeepChoice.Structures.Config;
 import net.enderbyteprograms.KeepChoice.Structures.ConfigDefaultBehaviour;
@@ -16,6 +17,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.io.File;
 import java.util.Objects;
 
 public class KeepInventoryCommand implements CommandExecutor {
@@ -33,7 +35,7 @@ public class KeepInventoryCommand implements CommandExecutor {
                     String currentworld = ((Player) sender).getWorld().getName();
 
                     if (!Static.Config.IsWorldAllowed(currentworld)) {
-                        Utils.SendError(sender, "Keep Inventory Choice is not permitted in this world.");
+                        Utils.SendError(sender, EPLanguage.get("error.notenabled"));
                         return false;
                     }
 
@@ -43,11 +45,11 @@ public class KeepInventoryCommand implements CommandExecutor {
 
                     currentdata.WorldData.put(currentworld, !currentdata.WorldData.get(currentworld));
 
-                    sender.sendMessage("Keep Inventory for world \"" + currentworld + "\" is now " + Utils.FriendlyBool(currentdata.WorldData.get(currentworld)));
+                    sender.sendMessage(EPLanguage.get("kihead") + currentworld + "\" : " + Utils.FriendlyBool(currentdata.WorldData.get(currentworld)));
 
                     Static.Plugin.WritePlayerData();
                 } else {
-                    Utils.SendError(sender, "Please specify a world and a player, or run /keepinventory help for a list of options");
+                    Utils.SendError(sender, EPLanguage.get("error.unknown"));
 
                     return false;
                 }
@@ -55,61 +57,54 @@ public class KeepInventoryCommand implements CommandExecutor {
                 String action = args[0];
                 if (Objects.equals(action, "help")) {
                     sender.sendMessage(ChatColor.BLUE + "KeepChoice v" + Constants.Version + ChatColor.RESET + " Help Page");
-                    sender.sendMessage("<> denotes mandatory argument, [] denotes optional argument.");
+                    sender.sendMessage(EPLanguage.get("help.lineinfo"));
                     if (Utils.isAdmin(sender)) {
                         sender.sendMessage(
-                                ChatColor.AQUA+"/keepinventory" + ChatColor.RESET + "[world] [player]\n" +
-                                        "    Toggles keep inventory status (if the player is allowed to) for [world] if specified, and for [player] if specified (themself if not)\n" +
-                                        ChatColor.AQUA+"/keepinventory" + ChatColor.RESET + " info\n" +
-                                        "    Lists world configurations stored in data\n" +
-                                        ChatColor.AQUA+"/keepinventory" + ChatColor.RESET + " list\n" +
-                                        "    Lists all player data\n" +
-                                        ChatColor.AQUA+"/keepinventory" + ChatColor.RESET + " setrunson <world> <yes|no>\n" +
-                                        "    Set whether this plugin runs on <world>.\n" +
-                                        ChatColor.AQUA+"/keepinventory" + ChatColor.RESET + " setdefaultkion <world> <yes|no> [force|noforce]\n" +
-                                        "    Set the default keep inventory status for <world>. If force is specified, every player's settings will be updated to match this. If not, only newly joined players will experience the change. \n" +
-                                        ChatColor.AQUA+"/keepinventory" + ChatColor.RESET + " reload\n" +
-                                        "    Reload configuration from the disk"
+                                EPLanguage.get("help.adminhelp")
                         );
                     } else {
                         sender.sendMessage(
-                                ChatColor.AQUA+"/keepinventory" + ChatColor.RESET + " [world]\n" +
-                                        "    Toggles keep inventory status for [world] if specified (else use current world)\n"
+                                EPLanguage.get("help.userhelp")
                         );
                     }
 
-                } else if (action.equals("info")) {
-                    sender.sendMessage("Default Keep Inventory?:");
+                } else if (action.equals("worldinfo")) {
+                    sender.sendMessage(EPLanguage.get("info.head"));
                     for (String k : Static.Config.WorldSettings.keySet()) {
                         World w = Bukkit.getWorld(k);
                         if (w == null && !k.equals("default")) {
                             //Exemption for default
                         } else {
                             try {
-                                sender.sendMessage("World " + k + ": " + Utils.FriendlyBool(Static.Config.WorldSettings.get(k).KeepItems));
+                                sender.sendMessage(EPLanguage.get("info.world")+" " + k + ": " + Utils.FriendlyBool(Static.Config.WorldSettings.get(k).KeepItems));
                             } catch (Exception e) {
                                 //Prevent default from being ignored
-                                sender.sendMessage("World " + k + ": " + Utils.FriendlyBool(Static.Config.WorldSettings.get(k).KeepItems));
+                                sender.sendMessage(EPLanguage.get("info.world")+ " " + k + ": " + Utils.FriendlyBool(Static.Config.WorldSettings.get(k).KeepItems));
                             }
                         }
 
                     }
-                } else if (action.equals("list")) {
-                    sender.sendMessage("Note that data will appear whether or not this plugin is allowed in that world.");
-                    for (PlayerData p : Static.Data.values()) {
+                } else if (action.equals("playerinfo")) {
+                    sender.sendMessage(EPLanguage.get("list.head"));
+                    String pl = args[1];
+                    PlayerData p = null;
+                    if (Bukkit.getPlayer(pl) == null) {
+                        p = Static.Data.get(Bukkit.getOfflinePlayer(pl).getUniqueId().toString());
+                    } else {
+                        p = Static.Data.get(Bukkit.getPlayer(pl).getUniqueId().toString());
+                    }
                         sender.sendMessage(Utils.SafeGetNameOrUUID(p.Player) + ":");
                         for (String worldkey : p.WorldData.keySet()) {
                             sender.sendMessage("    " + worldkey + ": " + Utils.FriendlyBool(p.WorldData.get(worldkey)));
                         }
-                    }
                 } else if (action.equals("setrunson")) {
                     if (args.length < 3) {
-                        Utils.SendError(sender,"Not enough arguments");
+                        Utils.SendError(sender,EPLanguage.get("error.args"));
                         return false;
                     }
 
                     if (!Utils.isAdmin(sender)) {
-                        Utils.SendError(sender,"Insufficient Privilege!");
+                        Utils.SendError(sender,EPLanguage.get("error.perms"));
                         return false;
                     }
 
@@ -126,13 +121,13 @@ public class KeepInventoryCommand implements CommandExecutor {
                             }
                             Static.RawConfig.set("runinworlds",new String[]{"*"});
                             Static.Plugin.saveConfig();
-                            Utils.SendSuccess(sender,"Plugin enabled on all worlds");
+                            Utils.SendSuccess(sender,EPLanguage.get("run.allenabled"));
 
                         } else {
                             Static.Config.RunInWorlds.clear();
                             Static.RawConfig.set("runinworlds",new String[]{"__placeholder"});
                             Static.Plugin.saveConfig();
-                            Utils.SendSuccess(sender,"Plugin disabled on all worlds.");
+                            Utils.SendSuccess(sender,EPLanguage.get("run.alldisabled"));
                         }
 
 
@@ -145,18 +140,18 @@ public class KeepInventoryCommand implements CommandExecutor {
                         }
                         Static.RawConfig.set("runinworlds",Static.Config.RunInWorlds.toArray());
 
-                        Utils.SendSuccess(sender,"Updated plugin state for " + forworld);
+                        Utils.SendSuccess(sender,EPLanguage.get("stateupdated") + forworld);
 
                     }
                 } else if (action.equals("setdefaultkion")) {
 
                     if (args.length < 3) {
-                        Utils.SendError(sender,"Not enough arguments");
+                        Utils.SendError(sender,EPLanguage.get("error.args"));
                         return false;
                     }
 
                     if (!Utils.isAdmin(sender)) {
-                        Utils.SendError(sender,"Insufficient Privilege!");
+                        Utils.SendError(sender,EPLanguage.get("error.perms"));
                         return false;
                     }
 
@@ -170,7 +165,7 @@ public class KeepInventoryCommand implements CommandExecutor {
                     }
 
                     if (!forworld.equals("#default") && Bukkit.getWorld(forworld) == null) {
-                        Utils.SendError(sender,"Invalid world name. Either use a world name, or #default to edit the default settings");
+                        Utils.SendError(sender,EPLanguage.get("error.invalidworld"));
                         return false;
                     }
 
@@ -190,7 +185,7 @@ public class KeepInventoryCommand implements CommandExecutor {
                         }
                         Static.RawConfig.set("default.Enabled",newstate);
                         Static.Plugin.saveConfig();
-                        Utils.SendSuccess(sender,"Updated default setting for all worlds using default settings");
+                        Utils.SendSuccess(sender,EPLanguage.get("update.default"));
 
                     } else {
                         ConfigDefaultBehaviour olddata = Static.Config.WorldSettings.get(forworld);
@@ -206,15 +201,16 @@ public class KeepInventoryCommand implements CommandExecutor {
                             }
                         }
                         Static.Plugin.saveConfig();
-                        Utils.SendSuccess(sender,"Updated default setting for world "+forworld);
+                        Utils.SendSuccess(sender,EPLanguage.get("update.world")+forworld);
                     }
 
                 } else if (action.equals("reload")) {
                     if (Utils.isAdmin(sender)) {
                         Static.Config = new Config(Static.Plugin.getConfig());
-                        Utils.SendSuccess(sender, "Reloaded");
+                        EPLanguage.LoadConfigurationFile(new File(Static.Plugin.getDataFolder(),"language.yml"));
+                        Utils.SendSuccess(sender, "Reloaded configuration and language");
                     } else {
-                        Utils.SendError(sender,"Insufficient Privilege!");
+                        Utils.SendError(sender,EPLanguage.get("error.perms"));
                         return false;
                     }
                 } else {
@@ -228,7 +224,7 @@ public class KeepInventoryCommand implements CommandExecutor {
                             PlayerData currentdata = Static.Data.get(((Player) sender).getUniqueId().toString());
 
                             if (!Static.Config.IsWorldAllowed(currentworld)) {
-                                Utils.SendError(sender, "Keep Inventory Choice is not permitted in this world.");
+                                Utils.SendError(sender, EPLanguage.get("error.notenabled"));
                                 return false;
                             }
 
@@ -238,17 +234,17 @@ public class KeepInventoryCommand implements CommandExecutor {
 
                             currentdata.WorldData.put(currentworld, !currentdata.WorldData.get(currentworld));
 
-                            sender.sendMessage("Keep Inventory for world \"" + currentworld + "\" is now " + Utils.FriendlyBool(currentdata.WorldData.get(currentworld)));
+                            sender.sendMessage(EPLanguage.get("kihead") + currentworld + "\" : " + Utils.FriendlyBool(currentdata.WorldData.get(currentworld)));
 
                             Static.Plugin.WritePlayerData();
                         } else {
-                            Utils.SendError(sender, "Please specify a world and a player, or run /keepinventory help for a list of options");
+                            Utils.SendError(sender, EPLanguage.get("error.unknown"));
 
                             return false;
                         }
                     } else {
                         if (!Utils.isAdmin(sender)) {
-                            Utils.SendError(sender, "Insufficient Permission");
+                            Utils.SendError(sender, EPLanguage.get("error.perms"));
                             return false;
                         }
                         //World and player
@@ -262,7 +258,7 @@ public class KeepInventoryCommand implements CommandExecutor {
                         PlayerData currentdata = Static.Data.get(Bukkit.getOfflinePlayer(sfname).getUniqueId().toString());
 
                         if (!Static.Config.IsWorldAllowed(currentworld)) {
-                            Utils.SendError(sender, "Keep Inventory Choice is not permitted in this world.");
+                            Utils.SendError(sender, EPLanguage.get("error.notenabled"));
                             return false;
                         }
 
@@ -272,7 +268,7 @@ public class KeepInventoryCommand implements CommandExecutor {
 
                         currentdata.WorldData.put(currentworld, !currentdata.WorldData.get(currentworld));
 
-                        sender.sendMessage("Keep Inventory for world \"" + currentworld + "\" is now " + Utils.FriendlyBool(currentdata.WorldData.get(currentworld)) + " for " + Utils.SafeGetNameOrUUID(currentdata.Player));
+                        sender.sendMessage(EPLanguage.get("kihead") + currentworld + "\" : " + Utils.FriendlyBool(currentdata.WorldData.get(currentworld)) + " for " + Utils.SafeGetNameOrUUID(currentdata.Player));
 
                         Static.Plugin.WritePlayerData();
 

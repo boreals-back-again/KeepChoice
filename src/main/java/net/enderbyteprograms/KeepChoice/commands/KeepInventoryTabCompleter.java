@@ -25,7 +25,7 @@ public class KeepInventoryTabCompleter implements TabCompleter {
                 result.add(w.getName());
             }
             if (Utils.isAdmin(sender)) {
-                result.addAll(Arrays.asList("help", "list", "info", "setrunson", "setdefaultkion","reload"));
+                result.addAll(Arrays.asList("help", "playerinfo", "worldinfo", "setrunson", "setdefaultkion","reload"));
             } else {
                 result.add("help");
             }
@@ -58,6 +58,8 @@ public class KeepInventoryTabCompleter implements TabCompleter {
                     result.add(p.getDisplayName());
                 }
                 return Utils.CompareStartsWith(result,args[args.length-1]);
+            } else if (action.equals("playerinfo")) {
+
             }
         }
 
